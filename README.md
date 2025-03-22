@@ -1,1 +1,1 @@
-# resume_gen
+# resume_generator
