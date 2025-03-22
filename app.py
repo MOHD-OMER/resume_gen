@@ -35,6 +35,28 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+def calculate_ats_score(resume_data):
+    """Calculate ATS score based on resume completeness"""
+    score = 0
+    
+    # Basic information (30 points)
+    if resume_data['name']: score += 10
+    if resume_data['email']: score += 10
+    if resume_data['phone']: score += 10
+    
+    # Professional sections (50 points)
+    if resume_data['summary']: score += 10
+    if resume_data['skills']: score += 15
+    if resume_data['experience']: score += 15
+    if resume_data['education']: score += 10
+    
+    # Additional sections (20 points)
+    if resume_data['certifications']: score += 10
+    if resume_data['linkedin']: score += 10
+    
+    # Normalize to 100
+    return min(score, 100)
+
 def get_html_template():
     return Template('''
     <!DOCTYPE html>
@@ -58,6 +80,14 @@ def get_html_template():
                 color: #2c3e50; 
                 border-bottom: 2px solid #2c3e50; 
                 padding-bottom: 5px;
+            }
+            .ats-score {
+                color: #2c3e50;
+                font-weight: bold;
+                margin-top: 30px;
+                padding: 15px;
+                background: #f5f7fa;
+                border-radius: 5px;
             }
         </style>
     </head>
@@ -90,6 +120,11 @@ def get_html_template():
         <div class="section">
             <h2>Certifications</h2>
             <p>{{ certifications }}</p>
+        </div>
+        
+        <div class="ats-score">
+            <h2>ATS Score: {{ ats_score }}/100</h2>
+            <p>{{ ats_feedback }}</p>
         </div>
     </body>
     </html>
@@ -125,24 +160,40 @@ def main():
             return
             
         try:
-            # Escape special characters
-            def escape_text(text):
-                return str(text).replace('{', '{{').replace('}', '}}')
+            # Prepare resume data
+            resume_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'linkedin': linkedin,
+                'summary': summary,
+                'skills': skills,
+                'experience': experience,
+                'education': education,
+                'certifications': certifications
+            }
             
-            # Generate HTML content
+            # Calculate ATS score
+            ats_score = calculate_ats_score(resume_data)
+            ats_feedback = "Good job! Your resume is well-optimized." if ats_score >= 80 else \
+                           "Consider adding more details to improve your score."
+            
+            # Generate HTML with ATS score
             template = get_html_template()
             resume_html = template.render(
-                name=escape_text(name),
-                email=escape_text(email),
-                phone=escape_text(phone or "Not specified"),
-                linkedin=escape_text(linkedin or "Not specified"),
-                summary=escape_text(summary or "Experienced professional seeking new opportunities"),
-                skills=escape_text(skills),
-                experience=escape_text(experience),
-                education=escape_text(education),
-                certifications=escape_text(certifications or "No certifications listed")
+                name=name,
+                email=email,
+                phone=phone or "Not specified",
+                linkedin=linkedin or "Not specified",
+                summary=summary or "Experienced professional seeking new opportunities",
+                skills=skills,
+                experience=experience,
+                education=education,
+                certifications=certifications or "No certifications listed",
+                ats_score=ats_score,
+                ats_feedback=ats_feedback
             )
-
+            
             # Configure wkhtmltopdf path
             def get_wkhtml_path():
                 if platform.system() == 'Windows':
@@ -152,7 +203,7 @@ def main():
 
             wkhtml_path = get_wkhtml_path()
 
-            # Verify executable exists
+            # Verify path exists
             if not os.path.exists(wkhtml_path):
                 st.error(f"""❗ wkhtmltopdf not found at: {wkhtml_path}
                     Download from: https://wkhtmltopdf.org/downloads.html
@@ -167,10 +218,7 @@ def main():
                 resume_html, 
                 False, 
                 configuration=config,
-                options={
-                    'enable-local-file-access': None,
-                    'quiet': ''
-                }
+                options={'enable-local-file-access': None}
             )
             
             # Download button
@@ -182,18 +230,25 @@ def main():
                 mime="application/pdf"
             )
             
-            # Preview
+            # Show preview
             st.subheader("Preview")
             st.components.v1.html(resume_html, height=1000, scrolling=True)
+            
+            # Show ATS score
+            st.subheader("ATS Score")
+            st.metric("Resume Score", f"{ats_score}/100")
+            if ats_score < 80:
+                st.warning(ats_feedback)
+            else:
+                st.success(ats_feedback)
             
         except Exception as e:
             st.error(f"""Error generating resume: {str(e)}
                 Troubleshooting steps:
                 1. Reinstall wkhtmltopdf from official website
-                2. Run as Administrator (Windows)
+                2. Run this application as Administrator
                 3. Check antivirus/firewall settings
-                4. Verify file permissions
-                5. Ensure all required fields are filled""")
+                4. Verify file permissions""")
 
 if __name__ == "__main__":
     main()
