@@ -103,7 +103,6 @@ PDF generation powered by wkhtmltopdf
 
 Inspired by modern resume design trends
 
-Copy
 
 **Key Features**:
 - Clear installation instructions
@@ -113,18 +112,4 @@ Copy
 - Deployment guide
 - Contribution guidelines
 - License information
-
-To use this README:
-1. Replace `your-username` with your GitHub username
-2. Add a demo gif/screenshot (optional but recommended)
-3. Customize the acknowledgments section
-4. Add your license file
-5. Update any specific project details
-
-This README provides:
-✅ Professional presentation  
-✅ Clear usage instructions  
-✅ Technical documentation  
-✅ Community guidelines  
-✅ Visual appeal with emojis and badges
 
