@@ -25,47 +25,42 @@ An AI-powered web application that helps users create professional resumes quick
 1. Clone the repository:
 ```bash
 git clone https://github.com/your-username/smart-resume-generator.git
-cd smart-resume-generatorInstall dependencies:
+cd smart-resume-generator
 
-bash
-Copy
+2.Install dependencies:
+
 pip install -r requirements.txt
-Install wkhtmltopdf:
+
+3.Install wkhtmltopdf:
 
 Windows: Download from official site
 
 Linux:
-
-bash
-Copy
 sudo apt-get install wkhtmltopdf
+
 Mac:
-
-bash
-Copy
 brew install --cask wkhtmltopdf
+
 Usage 🚦
-Run the application:
 
-bash
-Copy
-streamlit run app.py
-Access the web interface at http://localhost:8501
+1.Run the application:
+  streamlit run app.py
+2.Access the web interface at      http://localhost:8501
 
-Fill in your details and generate your resume!
+3.Fill in your details and generate your resume!
 
 Deployment ☁️
 Deploy to Streamlit Community Cloud:
 
-Fork this repository
+1.Fork this repository
 
-Go to Streamlit Cloud
+2.Go to Streamlit Cloud
 
-Click "New app" → Select your forked repository
+3.Click "New app" → Select your forked repository
 
-Set main file path to app.py
+4.Set main file path to app.py
 
-Click "Deploy"
+5.Click "Deploy"
 
 Tech Stack 🛠️
 Frontend: Streamlit
@@ -79,15 +74,15 @@ Core Language: Python 3.9+
 Contributing 🤝
 Contributions are welcome! Please follow these steps:
 
-Fork the project
+1.Fork the project
 
-Create your feature branch (git checkout -b feature/AmazingFeature)
+2.Create your feature branch (git checkout -b feature/AmazingFeature)
 
-Commit your changes (git commit -m 'Add some AmazingFeature')
+3.Commit your changes (git commit -m 'Add some AmazingFeature')
 
-Push to the branch (git push origin feature/AmazingFeature)
+4.Push to the branch (git push origin feature/AmazingFeature)
 
-Open a Pull Request
+5.Open a Pull Request
 
 Troubleshooting 🔧
 Common Issues:
